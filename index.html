@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhoneLens — Phone Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+  <!-- app.js loaded with defer so DOM is ready before script runs -->
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header>
+  <div class="header-brand">
+    <h1 class="logo">Phone<span>Lens</span></h1>
+  </div>
+  <div class="header-actions">
+    <button class="btn-signin" onclick="openSignIn()">Sign In</button>
+    <button class="btn-buy" onclick="openBuyModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      Buy Now
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     SEARCH BAR
+══════════════════════════════════════ -->
+<div class="search-section">
+  <div class="search-wrapper">
+    <svg width="18" height="18" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input id="searchInput" type="text"
+           placeholder="Search phones — e.g. Samsung, iPhone, Pixel…" />
+  </div>
+  <button class="btn btn-primary" onclick="handleSearch()">Search</button>
+  <button class="btn btn-outline" onclick="handleShowAll()">Show All</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     STATUS BAR
+══════════════════════════════════════ -->
+<div class="status-bar">
+  <p class="status-text" id="statusText">Loading phones…</p>
+  <div class="spinner active" id="spinner"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PHONES GRID
+══════════════════════════════════════ -->
+<div class="grid-section">
+  <div id="phonesGrid">
+    <div class="empty-state">
+      <div class="empty-icon">📱</div>
+      <p class="empty-title">Loading phones…</p>
+      <p class="empty-sub">Please wait a moment.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PHONE DETAIL MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <div>
+        <p class="card-brand" id="modalBrand"></p>
+        <h2 class="modal-title" id="modalTitle"></h2>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-img-col">
+        <div class="modal-img-wrap">
+          <img id="modalImg" src="" alt="Phone" />
+        </div>
+        <div class="modal-brand-badge" id="modalBrandBadge"></div>
+      </div>
+      <div class="modal-info-col">
+        <div class="specs-grid" id="modalSpecs"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SIGN IN MODAL
+══════════════════════════════════════ -->
+<div class="signin-overlay" id="signinOverlay" onclick="handleSigninOverlay(event)">
+  <div class="signin-box">
+    <button class="signin-close" onclick="closeSignIn()">✕</button>
+    <div class="signin-logo">Phone<span>Lens</span></div>
+    <p class="signin-sub">Sign in to your account</p>
+    <div class="signin-field">
+      <label for="signinEmail">Email</label>
+      <input type="email" id="signinEmail" placeholder="you@example.com" />
+    </div>
+    <div class="signin-field">
+      <label for="signinPass">Password</label>
+      <input type="password" id="signinPass" placeholder="••••••••" />
+    </div>
+    <button class="signin-submit" onclick="handleSigninSubmit()">Sign In</button>
+    <p class="signin-footer-text">
+      Don't have an account? <a onclick="closeSignIn()">Create one →</a>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     BUY MODAL
+══════════════════════════════════════ -->
+<div class="signin-overlay" id="buyOverlay" onclick="handleBuyOverlay(event)">
+  <div class="signin-box">
+    <button class="signin-close" onclick="closeBuyModal()">✕</button>
+    <div class="signin-logo">Buy a <span>Phone</span></div>
+    <p class="signin-sub">Fill in your details to purchase</p>
+    <div class="signin-field">
+      <label for="buyName">Full Name</label>
+      <input type="text" id="buyName" placeholder="John Doe" />
+    </div>
+    <div class="signin-field">
+      <label for="buyEmail">Email</label>
+      <input type="email" id="buyEmail" placeholder="you@example.com" />
+    </div>
+    <div class="signin-field">
+      <label for="buyModel">Phone Model</label>
+      <input type="text" id="buyModel" placeholder="e.g. Samsung Galaxy S24" />
+    </div>
+    <button class="signin-submit" onclick="handleBuySubmit()">Proceed to Checkout →</button>
+    <p class="signin-footer-text">Secure checkout · Free shipping on all orders</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <div class="footer-top">
+
+    <!-- Brand column -->
+    <div class="footer-brand">
+      <p class="footer-logo">Phone<span>Lens</span></p>
+      <p class="footer-desc">
+        Your go-to destination for exploring, comparing, and buying the
+        latest smartphones from all major brands worldwide.
+      </p>
+    </div>
+
+    <!-- Explore links -->
+    <div class="footer-links-group">
+      <p class="footer-group-title">Explore</p>
+      <a href="#" class="footer-link">All Phones</a>
+      <a href="#" class="footer-link">Compare Models</a>
+      <a href="#" class="footer-link">Top Rated</a>
+      <a href="#" class="footer-link">New Arrivals</a>
+    </div>
+
+    <!-- Support links -->
+    <div class="footer-links-group">
+      <p class="footer-group-title">Support</p>
+      <a href="#" class="footer-link">Help Center</a>
+      <a href="#" class="footer-link">Contact Us</a>
+      <a href="#" class="footer-link">Returns</a>
+      <a href="#" class="footer-link">Warranty</a>
+    </div>
+
+    <!-- Company links -->
+    <div class="footer-links-group">
+      <p class="footer-group-title">Company</p>
+      <a href="#" class="footer-link">About Us</a>
+      <a href="#" class="footer-link">Careers</a>
+      <a href="#" class="footer-link">Blog</a>
+      <a href="#" class="footer-link">Press</a>
+    </div>
+
+  </div><!-- /.footer-top -->
+
+  <div class="footer-bottom">
+    <p>© 2026 PhoneLens. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
