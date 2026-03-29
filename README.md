@@ -145,6 +145,6 @@ PhoneLens/
 
 ## 🔗 GitHub Repository
 
-[(Add your repository link here)](https://github.com/Vihanga-Ops/Phone-Search-Web-App.git)
+[(https://github.com/Vihanga-Ops/Phone-Search-Web-App.git)]
 
 ---
